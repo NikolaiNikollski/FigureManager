@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "FigureManager": {
+      "commandName": "Project",
+      "workingDirectory": "C:\\projects\\FigureManager\\FigureManager"
+    }
+  }
+}

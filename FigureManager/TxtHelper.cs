@@ -1,4 +1,4 @@
-﻿using FigureManager.Decorator;
+﻿using FigureManager.Figures;
 using SFML.Graphics;
 using SFML.System;
 using System.Collections.Generic;
@@ -10,21 +10,27 @@ namespace FigureManager
 {
     public static class TxtHelper
     {
-        public static List<Shape> LoadShapes()
+        private const string TriangleTypeName = "TRIANGLE";
+        private const string RectangleTypeName = "RECTANGLE";
+        private const string CircleTypeName = "CIRCLE";
+        private const string TypeRegEx = "(.*?):";
+        private const string ParametersRegEx = "=(.*?)(;|$)";
+
+        public static List<Shape> LoadShapes(string inputPath)
         {
             List<Shape> shapes = new List<Shape>();
 
-            StreamReader sr = new StreamReader(InputFilePath, Encoding.Default);
+            StreamReader sr = new StreamReader(inputPath, Encoding.Default);
             string line;
             while ((line = sr.ReadLine()?.Trim()) != null)
             {
-                Match typeMatch = Regex.Match(line, "(.*?):");
-                MatchCollection parametersMatches = Regex.Matches(line, "=(.*?)(;|$)");
+                Match typeMatch = Regex.Match(line, TypeRegEx);
+                MatchCollection parametersMatches = Regex.Matches(line, ParametersRegEx);
                 string type = typeMatch.Groups[1].Value;
 
                 switch (type)
                 {
-                    case "TRIANGLE":
+                    case TriangleTypeName:
                         string[] coordinates = parametersMatches[0].Groups[1].Value.Split(',');
                         Vector2f p1 = new Vector2f(float.Parse(coordinates[0]), float.Parse(coordinates[1]));
                         coordinates = parametersMatches[1].Groups[1].Value.Split(',');
@@ -33,14 +39,14 @@ namespace FigureManager
                         Vector2f p3 = new Vector2f(float.Parse(coordinates[0]), float.Parse(coordinates[1]));
                         shapes.Add(new Triangle(p1, p2, p3));
                         break;
-                    case "RECTANGLE":
+                    case RectangleTypeName:
                         coordinates = parametersMatches[0].Groups[1].Value.Split(',');
                         p1 = new Vector2f(float.Parse(coordinates[0]), float.Parse(coordinates[1]));
                         coordinates = parametersMatches[1].Groups[1].Value.Split(',');
                         p2 = new Vector2f(float.Parse(coordinates[0]), float.Parse(coordinates[1]));
                         shapes.Add(new Rectangle(p1, p2));
                         break;
-                    case "CIRCLE":
+                    case CircleTypeName:
                         coordinates = parametersMatches[0].Groups[1].Value.Split(',');
                         p1 = new Vector2f(float.Parse(coordinates[0]), float.Parse(coordinates[1]));
                         float r = float.Parse(parametersMatches[1].Groups[1].Value);
@@ -53,12 +59,12 @@ namespace FigureManager
             return shapes;
         }
 
-        public static void SetShapeDescription(List<Shape> shapes)
+        public static void SetShapeDescription(List<Shape> shapes, string outputPath)
         {
-            StreamWriter sw = new StreamWriter(OutputFilePath);
+            StreamWriter sw = new StreamWriter(outputPath);
             foreach (IMathCalculable shape in shapes)
             {
-                sw.WriteLine(((IMathCalculable)shape).GetDescription());
+                sw.WriteLine(shape.GetDescription());
             }
             sw.Dispose();
         }

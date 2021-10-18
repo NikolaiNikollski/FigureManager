@@ -1,4 +1,4 @@
-﻿namespace FigureManager.Decorator
+﻿namespace FigureManager.Figures
 {
     public interface IMathCalculable
     {

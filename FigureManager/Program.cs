@@ -1,8 +1,7 @@
-﻿using FigureManager.Decorator;
-using SFML.Graphics;
+﻿using SFML.Graphics;
+using SFML.Window;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FigureManager
 {

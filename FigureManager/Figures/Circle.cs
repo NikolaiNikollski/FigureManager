@@ -2,7 +2,7 @@
 using SFML.System;
 using System;
 
-namespace FigureManager.Decorator
+namespace FigureManager.Figures
 {
     class Circle : CircleShape, IMathCalculable
     {
@@ -13,7 +13,7 @@ namespace FigureManager.Decorator
 
         public float Square => (float)(Math.Pow(Radius, 2) * Math.PI);
 
-        public float Perimeter => (float)(2 * Radius * Math.PI);
+        public float Perimeter => (float)(2 * Math.Abs(Radius) * Math.PI);
 
         public string GetDescription()
         {

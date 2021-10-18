@@ -2,7 +2,7 @@
 using SFML.System;
 using System;
 
-namespace FigureManager.Decorator
+namespace FigureManager.Figures
 {
     class Triangle : ConvexShape, IMathCalculable
     {

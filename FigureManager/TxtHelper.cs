@@ -16,9 +16,9 @@ namespace FigureManager
         private const string TypeRegEx = "(.*?):";
         private const string ParametersRegEx = "=(.*?)(;|$)";
 
-        public static List<Shape> LoadShapes(string inputPath)
+        public static List<IShape> LoadShapes(string inputPath)
         {
-            List<Shape> shapes = new List<Shape>();
+            List<IShape> shapes = new List<IShape>();
 
             StreamReader sr = new StreamReader(inputPath, Encoding.Default);
             string line;
@@ -59,12 +59,12 @@ namespace FigureManager
             return shapes;
         }
 
-        public static void SetShapeDescription(List<Shape> shapes, string outputPath)
+        public static void SetShapeDescription(List<IShape> shapes, string outputPath)
         {
             StreamWriter sw = new StreamWriter(outputPath);
-            foreach (IMathCalculable shape in shapes)
+            foreach (IShape shape in shapes)
             {
-                sw.WriteLine(shape.GetDescription());
+                sw.WriteLine(shape.GetDescription);
             }
             sw.Dispose();
         }

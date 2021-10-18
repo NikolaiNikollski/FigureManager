@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using FigureManager.Figures;
+using SFML.Graphics;
 using SFML.Window;
 using System;
 using System.Collections.Generic;
@@ -17,18 +18,18 @@ namespace FigureManager
             win = new RenderWindow(new SFML.Window.VideoMode(800, 600), AppName);
             win.Closed += Win_Closed;
 
-            List<Shape> shapes = TxtHelper.LoadShapes();
-            TxtHelper.SetShapeDescription(shapes);
+            List<IShape> shapes = TxtHelper.LoadShapes(InputFilePath);
+            TxtHelper.SetShapeDescription(shapes, OutputFilePath);
 
             while (win.IsOpen)
             {
                 win.DispatchEvents();
                 win.Clear(Color.Black);
 
-                foreach (Shape shape in shapes)
+                foreach (IShape shape in shapes)
                 {
                     shape.FillColor = Color.Green;
-                    win.Draw(shape);
+                    shape.Draw(win);
                 }
 
                 win.Display();

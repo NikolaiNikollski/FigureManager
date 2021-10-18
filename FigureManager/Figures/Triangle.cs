@@ -4,7 +4,7 @@ using System;
 
 namespace FigureManager.Figures
 {
-    class Triangle : ConvexShape, IMathCalculable
+    class Triangle : ConvexShape, IShape
     {
         const int PointCount = 3;
 
@@ -18,17 +18,19 @@ namespace FigureManager.Figures
             float b = (float)Math.Sqrt(Math.Pow(p3.X - p2.X, 2) + Math.Pow(p3.Y - p2.Y, 2));
             float c = (float)Math.Sqrt(Math.Pow(p1.X - p3.X, 2) + Math.Pow(p1.Y - p3.Y, 2));
 
-            Perimeter = a + b + c;
-            Square = (float)Math.Sqrt(Perimeter / 2 * (Perimeter / 2 - a) * (Perimeter / 2 - b) * (Perimeter / 2 - c));
+            GetPerimeter = a + b + c;
+            GetSquare = (float)Math.Sqrt(GetPerimeter / 2 * (GetPerimeter / 2 - a) * (GetPerimeter / 2 - b) * (GetPerimeter / 2 - c));
         }
 
-        public float Square { get; protected set; }
+        public float GetSquare { get; protected set; }
 
-        public float Perimeter { get; protected set; }
+        public float GetPerimeter { get; protected set; }
 
-        public string GetDescription()
+        string IShape.GetDescription => string.Format("{0}: P={1}; S={2}", "Triangle", GetPerimeter, GetSquare);
+
+        public void Draw(RenderWindow window)
         {
-            return string.Format("{0}: P={1}; S={2}", "Triangle", Perimeter, Square);
+            window.Draw(this);
         }
     }
 }

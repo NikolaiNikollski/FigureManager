@@ -6,11 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SFML.Net" Version="2.5.0" />
+    <Compile Remove="AppModel\**" />
+    <EmbeddedResource Remove="AppModel\**" />
+    <None Remove="AppModel\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="AppModel\" />
+    <PackageReference Include="SFML.Net" Version="2.5.0" />
   </ItemGroup>
 
 </Project>

@@ -1,17 +1,29 @@
 ﻿using SFML.Graphics;
+using SFML.System;
 
-namespace FigureManager.Figures 
+namespace FigureManager.Figures
 {
     public interface IShape
     {
-        public void Draw(RenderWindow window);
+        void Draw(RenderWindow window);
 
-        public float GetSquare { get; }
+        FloatRect GetGlobalBounds();
 
-        public float GetPerimeter { get; }
+        Vector2f Position { get; set; }
 
-        public string GetDescription { get; }
+        public float OutlineThickness { get; set; }
 
-        public Color FillColor { get; set; }
+        public Color OutlineColor { get; set; }
+
+        Color FillColor { get; set; }
+
+        IShape GetFrame { get; }
+
+        // Area 
+        float GetSquare { get; }
+
+        float GetPerimeter { get; }
+
+        string GetDescription { get; }
     }
 }

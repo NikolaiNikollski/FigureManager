@@ -2,7 +2,7 @@
   "profiles": {
     "FigureManager": {
       "commandName": "Project",
-      "workingDirectory": "C:\\projects\\FigureManager\\FigureManager"
+      "workingDirectory": "C:\\projects\\FigureManager\\FigureManager\\Txt"
     }
   }
 }

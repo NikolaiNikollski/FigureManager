@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace FigureManager
+namespace FigureManager.Txt
 {
     public static class TxtHelper
     {
@@ -15,9 +15,9 @@ namespace FigureManager
         private const string TypeRegEx = "(.*?):";
         private const string ParametersRegEx = "=(.*?)(;|$)";
 
-        public static List<IShape> LoadShapes(string inputPath)
+        public static List<MyShape> LoadShapes(string inputPath)
         {
-            List<IShape> shapes = new List<IShape>();
+            List<MyShape> shapes = new List<MyShape>();
 
             StreamReader sr = new StreamReader(inputPath, Encoding.Default);
             string line;
@@ -58,10 +58,10 @@ namespace FigureManager
             return shapes;
         }
 
-        public static void SetShapeDescription(List<IShape> shapes, string outputPath)
+        public static void SetShapeDescription(List<MyShape> shapes, string outputPath)
         {
             StreamWriter sw = new StreamWriter(outputPath);
-            foreach (IShape shape in shapes)
+            foreach (MyShape shape in shapes)
             {
                 sw.WriteLine(shape.GetDescription);
             }

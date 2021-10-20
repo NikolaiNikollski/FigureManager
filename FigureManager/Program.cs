@@ -1,4 +1,5 @@
 ﻿using FigureManager.Figures;
+using FigureManager.Txt;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -17,13 +18,13 @@ namespace FigureManager
         static RenderWindow win;
 
         static bool isMove = false;
-        static IShape movingShape;
+        static MyShape movingShape;
         static float dX;
         static float dY;
         static string message;
 
-        static List<IShape> shapes;
-        static List<IShape> selectedShapes = new List<IShape>();
+        static List<MyShape> shapes;
+        static List<MyShape> selectedShapes = new List<MyShape>();
         static Vector2i mousePosition;
 
         static void Main(string[] args)
@@ -34,9 +35,10 @@ namespace FigureManager
             shapes = TxtHelper.LoadShapes(InputFilePath);
             TxtHelper.SetShapeDescription(shapes, OutputFilePath);
 
-            foreach (IShape shape in shapes)
+            foreach (MyShape shape in shapes)
             {
                 shape.FillColor = Color.Green;
+                Console.WriteLine(shape.GetDescription);
             }
 
             while (win.IsOpen)
@@ -60,12 +62,12 @@ namespace FigureManager
                     movingShape.GetFrame.Position = movingShape.Position;
                 }
 
-                foreach (IShape shape in shapes.Where(s => !selectedShapes.Contains(s)))
+                foreach (MyShape shape in shapes.Where(s => !selectedShapes.Contains(s)))
                 {
                     shape.Draw(win);
                 }
 
-                foreach (IShape selectedShape in selectedShapes)
+                foreach (MyShape selectedShape in selectedShapes)
                 {
                     selectedShape.Draw(win);
                     selectedShape.GetFrame.Draw(win);
@@ -138,20 +140,20 @@ namespace FigureManager
                 CompoundShape compoundShape = new CompoundShape(selectedShapes);
                 shapes.Add(compoundShape);
                 shapes = shapes.Except(selectedShapes).ToList();
-                selectedShapes = new List<IShape>();
+                selectedShapes = new List<MyShape>();
                 selectedShapes.Add(compoundShape);
             }
             else if (arguments.Control && arguments.Code == Keyboard.Key.G)
             {
-                foreach (IShape shape in selectedShapes)
+                foreach (MyShape shape in selectedShapes)
                 {
                     List<CompoundShape> compoundShapes = selectedShapes.Select(s => s as CompoundShape).Where(s => s != null).ToList();
                     foreach (CompoundShape compoundShape in compoundShapes)
                     {
                         shapes.AddRange(compoundShape.Shapes);
                     }
-                    selectedShapes = selectedShapes.Except(compoundShapes.Select(s => (IShape)s)).ToList();
-                    shapes = shapes.Except(compoundShapes.Select(s => (IShape)s)).ToList();
+                    selectedShapes = selectedShapes.Except(compoundShapes.Select(s => (MyShape)s)).ToList();
+                    shapes = shapes.Except(compoundShapes.Select(s => (MyShape)s)).ToList();
                 }
             }
         }

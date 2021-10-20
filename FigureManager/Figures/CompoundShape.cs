@@ -6,29 +6,26 @@ using System.Linq;
 
 namespace FigureManager.Figures
 {
-    public class CompoundShape : IShape
+    public class CompoundShape : MyShape
     {
-        public List<IShape> Shapes { get; }
+        public List<MyShape> Shapes { get; }
 
         private float lX;
         private float rX;
         private float tY;
         private float bY;
 
-        public CompoundShape(List<IShape> inShapes)
+        public CompoundShape(List<MyShape> inShapes) : base(inShapes.FirstOrDefault())
         {
             Shapes = inShapes;
         }
 
-        public IShape Parent { get; set; }
-
-
-        public IShape GetFrame
+        public override MyShape GetFrame
         {
             get
             {
                 FloatRect FrameBounds = GetGlobalBounds();
-                IShape frame =  new Rectangle(
+                MyShape frame = new Rectangle(
                     new Vector2f(FrameBounds.Left, FrameBounds.Top),
                     new Vector2f(FrameBounds.Left + FrameBounds.Width, FrameBounds.Top + FrameBounds.Height));
                 frame.FillColor = Color.Transparent;
@@ -39,43 +36,43 @@ namespace FigureManager.Figures
             }
         }
 
-        public Color FillColor
+        public override Color FillColor
         {
             get => Shapes[0].FillColor;
             set
             {
-                foreach (IShape shape in Shapes)
+                foreach (MyShape shape in Shapes)
                 {
                     shape.FillColor = value;
                 }
             }
         }
 
-        public Color OutlineColor
+        public override Color OutlineColor
         {
             get => Shapes[0].FillColor;
             set
             {
-                foreach (IShape shape in Shapes)
+                foreach (MyShape shape in Shapes)
                 {
                     shape.FillColor = value;
                 }
             }
         }
 
-        public float OutlineThickness
+        public override float OutlineThickness
         {
             get => Shapes[0].OutlineThickness;
             set
             {
-                foreach (IShape shape in Shapes)
+                foreach (MyShape shape in Shapes)
                 {
                     shape.OutlineThickness = value;
                 }
             }
         }
 
-        public Vector2f Position
+        public override Vector2f Position
         {
             get
             {
@@ -86,22 +83,22 @@ namespace FigureManager.Figures
                 float dX = value.X - lX;
                 float dY = value.Y - tY;
 
-                foreach (IShape shape in Shapes)
+                foreach (MyShape shape in Shapes)
                 {
                     shape.Position = new Vector2f(shape.Position.X + dX, shape.Position.Y + dY);
                 }
             }
         }
 
-        public void Draw(RenderWindow window)
+        public override void Draw(RenderWindow window)
         {
-            foreach (IShape shape in Shapes)
+            foreach (MyShape shape in Shapes)
             {
                 shape.Draw(window);
             }
         }
 
-        public FloatRect GetGlobalBounds()
+        public override FloatRect GetGlobalBounds()
         {
             FloatRect bounds = Shapes[0].GetGlobalBounds();
             lX = bounds.Left;
@@ -121,10 +118,8 @@ namespace FigureManager.Figures
             return new FloatRect(lX, tY, Math.Abs(lX - rX), Math.Abs(tY - bY));
         }
 
-        public float GetSquare => Shapes.Select(s => s.GetSquare).Aggregate((x, y) => x + y);
+        public override float GetSquare => Shapes.Select(s => s.GetSquare).Aggregate((x, y) => x + y);
 
-        public float GetPerimeter => Shapes.Select(s => s.GetPerimeter).Aggregate((x, y) => x + y);
-
-        public string GetDescription => string.Format("{0}: P={1}; S={2}", "Circle", GetPerimeter, GetSquare);
+        public override float GetPerimeter => Shapes.Select(s => s.GetPerimeter).Aggregate((x, y) => x + y);
     }
 }

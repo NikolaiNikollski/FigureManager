@@ -1,5 +1,5 @@
 ﻿using FigureManager.Canvas;
-using FigureManager.Figures;
+using FigureManager.Shapes;
 using FigureManager.ToolBar;
 using SFML.Graphics;
 using SFML.System;
@@ -17,12 +17,12 @@ namespace FigureManager
 
         static Vector2i mousePosition;
         static bool isMove = false;
-        static MyShape movingShape;
+        static MyShape shape;
         static float dX;
         static float dY;
 
         private static Toolbar _toolBar;
-        private static CanvasH _canvas;
+        private static Canvas.Canvas _canvas;
         static RenderWindow win;
 
 
@@ -31,15 +31,15 @@ namespace FigureManager
             if (_instance == null)
             {
                 _instance = new Application();
-                
+
             }
             return _instance;
         }
 
-        public static void Start(CanvasH canvas)
+        public static void Start(Canvas.Canvas canvas)
         {
             _canvas = canvas;
-            _toolBar = new Toolbar(_canvas.Width);
+            _toolBar = new Toolbar(_canvas.Width, canvas);
 
             win = new RenderWindow(new VideoMode(_canvas.Width, _canvas.Height), _canvas.Name);
             ListenEvents();
@@ -59,12 +59,10 @@ namespace FigureManager
 
                 if (isMove)
                 {
-                    movingShape.FillColor = Color.Red;
-                    movingShape.Position = new Vector2f(mousePosition.X - dX, mousePosition.Y - dY);
-                    movingShape.GetFrame.Position = movingShape.Position;
+                    shape.FillColor = Color.Red;
+                    shape.Position = new Vector2f(mousePosition.X - dX, mousePosition.Y - dY);
+                    shape.GetFrame.Position = shape.Position;
                 }
-
-                
 
                 _canvas.Draw(win);
                 _toolBar.Draw(win);
@@ -88,32 +86,33 @@ namespace FigureManager
 
         private static void Win_MouseButtonPressed(object sender, EventArgs e)
         {
+            Console.WriteLine("click");
             MouseButtonEventArgs arguments = (MouseButtonEventArgs)e;
             if (arguments.Button == Mouse.Button.Left)
             {
-                movingShape = _canvas.Shapes.FirstOrDefault(s => s.GetGlobalBounds().Contains(arguments.X, arguments.Y));
+                shape = _canvas.Shapes.FirstOrDefault(s => s.GetGlobalBounds().Contains(arguments.X, arguments.Y));
 
-                if (movingShape != null)
+                if (shape != null)
                 {
                     if (Keyboard.IsKeyPressed(Keyboard.Key.LControl))
                     {
-                        if (!_canvas.SelectedShapes.Contains(movingShape))
+                        if (!_canvas.SelectedShapes.Contains(shape))
                         {
-                            _canvas.SelectedShapes.Add(movingShape);
+                            _canvas.SelectedShapes.Add(shape);
                         }
                     }
                     else
                     {
                         _canvas.SelectedShapes.Clear();
-                        _canvas.SelectedShapes.Add(movingShape);
+                        _canvas.SelectedShapes.Add(shape);
                     }
 
-                    _canvas.Shapes.Remove(movingShape);
-                    _canvas.Shapes.Insert(0, movingShape);
+                    _canvas.Shapes.Remove(shape);
+                    _canvas.Shapes.Insert(0, shape);
                     isMove = true;
-                    dX = mousePosition.X - movingShape.Position.X;
-                    dY = mousePosition.Y - movingShape.Position.Y;
-                    movingShape.Position = new Vector2f(movingShape.Position.X + dX, movingShape.Position.Y + dY);
+                    dX = mousePosition.X - shape.Position.X;
+                    dY = mousePosition.Y - shape.Position.Y;
+                    shape.Position = new Vector2f(shape.Position.X + dX, shape.Position.Y + dY);
                 }
             }
         }
@@ -123,7 +122,7 @@ namespace FigureManager
             MouseButtonEventArgs arguments = (MouseButtonEventArgs)e;
             if (arguments.Button == Mouse.Button.Left && isMove)
             {
-                movingShape.FillColor = Color.Green;
+                shape.FillColor = Color.Green;
                 isMove = false;
             }
         }

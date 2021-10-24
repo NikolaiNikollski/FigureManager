@@ -1,4 +1,4 @@
-﻿using FigureManager.Figures;
+﻿using FigureManager.Shapes;
 using SFML.System;
 
 namespace FigureManager.ToolBar

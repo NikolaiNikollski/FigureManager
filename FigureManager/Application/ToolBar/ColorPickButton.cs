@@ -1,4 +1,4 @@
-﻿using FigureManager.Figures;
+﻿using FigureManager.Shapes;
 using SFML.Graphics;
 using SFML.System;
 
@@ -6,11 +6,13 @@ namespace FigureManager.ToolBar
 {
     class ColorPickButton : Button
     {
-        public Rectangle Background;
+        private Rectangle Background;
+        public Color Color;
 
         public ColorPickButton(Color color) : base(new Vector2f(0, 0), new Vector2f(ButtonSize, ButtonSize))
         {
             Type = ButtonType.ChooseColor;
+            Color = color;
 
             Shape.OutlineThickness = 2;
             Shape.OutlineColor = Color.Black;

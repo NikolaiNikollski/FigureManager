@@ -2,7 +2,7 @@
 using SFML.System;
 using System;
 
-namespace FigureManager.Figures
+namespace FigureManager.Shapes
 {
     public abstract class MyShape : Shape
     {
@@ -47,7 +47,8 @@ namespace FigureManager.Figures
             }
         }
 
-        // Area 
+        public ShapeType Type { get; protected set; }
+
         public abstract float GetSquare { get; }
 
         public abstract float GetPerimeter { get; }

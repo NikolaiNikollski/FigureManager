@@ -1,10 +1,11 @@
-﻿using SFML.Graphics;
+﻿using FigureManager.Shapes;
+using SFML.Graphics;
 using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FigureManager.Figures
+namespace FigureManager.Shapes
 {
     public class CompoundShape : MyShape
     {
@@ -18,6 +19,7 @@ namespace FigureManager.Figures
         public CompoundShape(List<MyShape> inShapes) : base(inShapes.FirstOrDefault())
         {
             Shapes = inShapes;
+            Type = ShapeType.CompoundShape;
         }
 
         public override MyShape GetFrame

@@ -1,4 +1,5 @@
 ﻿using FigureManager.Figures;
+using SFML.Graphics;
 using SFML.System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +16,7 @@ namespace FigureManager.Txt
         private const string TypeRegEx = "(.*?):";
         private const string ParametersRegEx = "=(.*?)(;|$)";
 
-        public static List<MyShape> LoadShapes(string inputPath)
+        public static CanvasModel LoadShapes(string inputPath)
         {
             List<MyShape> shapes = new List<MyShape>();
 
@@ -55,13 +56,14 @@ namespace FigureManager.Txt
             }
 
             sr.Dispose();
-            return shapes;
+            return new CanvasModel { Name = inputPath, Shapes = shapes, Background = Color.White, Width = 820, Height = 600};
         }
 
-        public static void SetShapeDescription(List<MyShape> shapes, string outputPath)
+        public static void SetShapeDescription(CanvasModel canvas, string outputPath)
         {
             StreamWriter sw = new StreamWriter(outputPath);
-            foreach (MyShape shape in shapes)
+            sw.WriteLine(canvas.Name + ":");
+            foreach (MyShape shape in canvas.Shapes)
             {
                 sw.WriteLine(shape.GetDescription);
             }

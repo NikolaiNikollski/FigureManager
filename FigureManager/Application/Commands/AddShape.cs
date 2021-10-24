@@ -6,10 +6,10 @@ namespace FigureManager.Commands
 {
     class AddShape : ICommand
     {
-        private readonly Canvas.Canvas _canvas;
+        private readonly Canvas.CanvasModel _canvas;
         private readonly MyShape _shape;
 
-        AddShape(Canvas.Canvas canvas, ShapeType type, Vector2f coords)
+        AddShape(Canvas.CanvasModel canvas, ShapeType type, Vector2f coords)
         {
             switch (type)
             {

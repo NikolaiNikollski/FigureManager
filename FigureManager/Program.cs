@@ -1,5 +1,4 @@
-﻿using FigureManager.Canvas;
-using FigureManager.Txt;
+﻿using FigureManager.Txt;
 
 namespace FigureManager
 {
@@ -10,9 +9,9 @@ namespace FigureManager
 
         static void Main(string[] args)
         {
-            Canvas.Canvas canvas = TxtHelper.LoadShapes(InputFilePath);
+            Canvas.CanvasModel canvas = TxtHelper.LoadShapes(InputFilePath);
             TxtHelper.SetShapeDescription(canvas, OutputFilePath);
-            Application.Start(canvas);
+            Application.Application.Start(canvas);
         }
     }
 }

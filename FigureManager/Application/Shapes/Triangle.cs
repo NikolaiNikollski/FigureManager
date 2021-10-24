@@ -31,12 +31,12 @@ namespace FigureManager.Shapes
         public Triangle(Vector2f center) : base(new ConvexShape(PointCount))
         {
             ConvexShape baseShape = (ConvexShape)base.Shape;
-            Vector2f p1 = new Vector2f(center.X, center.Y + DefaultRadius);
-            Vector2f p2 = new Vector2f(-center.X * (float)Math.Sqrt(3) / 2, center.Y + DefaultRadius / 2);
-            Vector2f p3 = new Vector2f(center.X * (float)Math.Sqrt(3) / 2, center.Y + DefaultRadius / 2);
+            Vector2f p1 = new Vector2f(center.X, center.Y - DefaultRadius);
+            Vector2f p2 = new Vector2f(center.X - DefaultRadius * (float)Math.Sqrt(3) / 2, center.Y + DefaultRadius / 2);
+            Vector2f p3 = new Vector2f(center.X + DefaultRadius *(float)Math.Sqrt(3) / 2, center.Y + DefaultRadius / 2);
             baseShape.SetPoint(0, p1);
             baseShape.SetPoint(1, p2);
-            baseShape.SetPoint(1, p3);
+            baseShape.SetPoint(2, p3);
 
             Side0 = (float)Math.Sqrt(Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
             Side1 = (float)Math.Sqrt(Math.Pow(p3.X - p2.X, 2) + Math.Pow(p3.Y - p2.Y, 2));

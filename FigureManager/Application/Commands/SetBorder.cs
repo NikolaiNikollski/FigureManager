@@ -6,10 +6,10 @@ namespace FigureManager.Commands
 {
     class SetBorder : ICommand
     {
-        private readonly Canvas.Canvas _canvas;
+        private readonly Canvas.CanvasModel _canvas;
         private readonly MyShape _shape;
 
-        SetBorder(Canvas.Canvas canvas, Vector2f coords)
+        SetBorder(Canvas.CanvasModel canvas, Vector2f coords)
         {
             
         }

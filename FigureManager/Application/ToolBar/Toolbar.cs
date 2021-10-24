@@ -1,4 +1,6 @@
-﻿using FigureManager.Shapes;
+﻿using FigureManager.Application.ToolBar.States;
+using FigureManager.Canvas;
+using FigureManager.Shapes;
 using SFML.Graphics;
 using SFML.System;
 using System.Collections.Generic;
@@ -8,21 +10,21 @@ namespace FigureManager.ToolBar
 {
     public class Toolbar
     {
+        private State State;
+        private CanvasModel Canvas;
+        public List<Button> Buttons = new List<Button>();
+        public Rectangle Background;
+
         private const int ToolBarHeight = 50;
         private const int YPosition = 7;
         private const int XPositionBase = 5;
         private const int XPositionStep = 45;
 
-        private Color ActiveColor = Color.White;
-        private ButtonType ActiveCustomButton = ButtonType.DragAndDrope;
-        List<Button> Buttons = new List<Button>();
-        Rectangle Background;
-
-        Canvas.Canvas _canvas;//
-
-        public Toolbar(uint canvasWidth, Canvas.Canvas canvas)
+        public Toolbar(uint canvasWidth, CanvasModel canvas)
         {
-            _canvas = canvas;
+            Canvas = canvas;
+            State = new DragAndDropeState(canvas, this, Color.White);
+
             Background = new Rectangle(new Vector2f(0, 0), new Vector2f(canvasWidth, ToolBarHeight));
             Background.FillColor = new Color(192, 192, 192);
 
@@ -45,16 +47,20 @@ namespace FigureManager.ToolBar
 
         public void Draw(RenderWindow win)
         {
-            Background.Draw(win);
+            foreach (Button button in Buttons)
+            {
+                button.FillColor = Color.White;
+            }
             Buttons
                 .Where(b => b.Type == ButtonType.ChooseColor)
                 .Select(b => (ColorPickButton)b)
-                .First(b => b.Color == ActiveColor)
+                .First(b => b.Color == State.ActiveColor)
                 .FillColor = Color.Magenta;
             Buttons
-                .First(b => b.Type == ActiveCustomButton)
+                .First(b => b.Type == State.ActiveCustomButton)
                 .FillColor = Color.Magenta;
 
+            Background.Draw(win);
             int XPosition = XPositionBase;
             foreach (Button button in Buttons)
             {
@@ -66,67 +72,24 @@ namespace FigureManager.ToolBar
 
         public void MouseLeftPressed(Vector2f coords, bool isCtrlPressed)
         {
-            if (Background.GetGlobalBounds().Contains(coords.X, coords.Y))
-            {
-                Button button = GetButton(coords);
-                if (button != null)
-                {
-                    switch (button.Type)
-                    {
-                        case ButtonType.DragAndDrope:
-                        case ButtonType.Fill:
-                        case ButtonType.AddRectangle:
-                        case ButtonType.AddTriangle:
-                        case ButtonType.AddCircle:
-                            ActiveCustomButton = button.Type;
-                            break;
-                        case ButtonType.ChooseColor:
-                            ActiveColor = ((ColorPickButton)button).Color;
-                            break;
-                        case ButtonType.SetOutline0:
-                            _canvas.SetOutlineThickness(0);
-                            break;
-                        case ButtonType.SetOutline1:
-                            _canvas.SetOutlineThickness(1);
-                            break;
-                        case ButtonType.SetOutline2:
-                            _canvas.SetOutlineThickness(2);
-                            break;
-                        case ButtonType.SetOutline3:
-                            _canvas.SetOutlineThickness(3);
-                            break;
-                        case ButtonType.SetOutlineColor:
-                            _canvas.SetOutlineColor(ActiveColor);
-                            break;
-                    }
-                }
-            }
-            else
-            {
-                switch (ActiveCustomButton)
-                {
-                    case ButtonType.DragAndDrope:
-                        _canvas.SelectShape(coords, !isCtrlPressed);
-                        break;
-                    case ButtonType.Fill:
-                        _canvas.Fill(coords, ActiveColor);
-                        break;
-                    case ButtonType.AddRectangle:
-                        _canvas.AddShape(coords, ShapeType.Rectangle);
-                        break;
-                    case ButtonType.AddTriangle:
-                        _canvas.AddShape(coords, ShapeType.Triangle);
-                        break;
-                    case ButtonType.AddCircle:
-                        _canvas.AddShape(coords, ShapeType.Circle);
-                        break;
-                }
-            }
+            State.MouseLeftClick(coords, isCtrlPressed);
+
+
         }
 
-        private Button GetButton(Vector2f coords)
+        public void SetState(State state)
         {
-            return Buttons.FirstOrDefault(s => s.GetGlobalBounds().Contains(coords.X, coords.Y));
+            State = state;
+        }
+
+        public void CtrlUPressed()
+        {
+            Canvas.CombineShape();
+        }
+
+        public void CtrlGPressed()
+        {
+            Canvas.CombineShape();
         }
     }
 }

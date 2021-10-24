@@ -7,7 +7,7 @@ using System.Text;
 
 namespace FigureManager.Canvas
 {
-    public class Canvas
+    public class CanvasH
     {
         public string Name { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using FigureManager.Figures;
+﻿using FigureManager.Canvas;
+using FigureManager.Figures;
 using FigureManager.ToolBar;
 using SFML.Graphics;
 using SFML.System;
@@ -21,7 +22,7 @@ namespace FigureManager
         static float dY;
 
         private static Toolbar _toolBar;
-        private static Canvas _canvas;
+        private static CanvasH _canvas;
         static RenderWindow win;
 
 
@@ -35,7 +36,7 @@ namespace FigureManager
             return _instance;
         }
 
-        public static void Start(CanvasModel canvas)
+        public static void Start(CanvasH canvas)
         {
             _canvas = canvas;
             _toolBar = new Toolbar(_canvas.Width);
@@ -65,8 +66,8 @@ namespace FigureManager
 
                 
 
+                _canvas.Draw(win);
                 _toolBar.Draw(win);
-                _canvas.Dr
 
                 win.Display();
             }

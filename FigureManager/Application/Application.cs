@@ -101,6 +101,7 @@ namespace FigureManager.Application
             {
                 _toolBar.CtrlGPressed();
             }
+
             else if (arguments.Control && arguments.Code == Keyboard.Key.Z)
             {
                 if (_commandHistory.Count > 0)

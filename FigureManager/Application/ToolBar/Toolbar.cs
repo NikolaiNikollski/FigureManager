@@ -87,7 +87,7 @@ namespace FigureManager.ToolBar
 
         public void CtrlGPressed()
         {
-            Canvas.CombineShape();
+            Canvas.DisbandShape();
         }
     }
 }

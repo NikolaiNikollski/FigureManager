@@ -1,5 +1,4 @@
-﻿using FigureManager.Canvas;
-using FigureManager.Shapes;
+﻿using FigureManager.Shapes;
 using FigureManager.ToolBar;
 using SFML.Graphics;
 using SFML.System;
@@ -9,19 +8,19 @@ namespace FigureManager.Application.ToolBar.States
 {
     public abstract class State
     {
-        protected CanvasModel Canvas;
+        protected Canvas Canvas;
         protected Toolbar Toolbar;
         public ButtonType ActiveCustomButton { get; protected set; }
         public Color ActiveColor = Color.White;
 
-        protected State(Toolbar toolbar, CanvasModel canvas, Color activeColor)
+        protected State(Toolbar toolbar, Canvas canvas, Color activeColor)
         {
             Toolbar = toolbar;
             Canvas = canvas;
             ActiveColor = activeColor;
         }
 
-        public abstract void CanvasClick(Vector2f coords, bool isCtrlPressed, Color color);
+        public abstract bool CanvasClick(Vector2f coords, bool isCtrlPressed, Color color);
 
         public void MouseLeftClick(Vector2f coords, bool isCtrlPressed)
         {
@@ -70,7 +69,7 @@ namespace FigureManager.Application.ToolBar.States
             }
             else
             {
-                CanvasClick(coords, isCtrlPressed, ActiveColor);
+                bool result = CanvasClick(coords, isCtrlPressed, ActiveColor);               
             }
         }
     }

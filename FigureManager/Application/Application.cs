@@ -1,20 +1,26 @@
-﻿using FigureManager.Shapes;
+﻿using FigureManager.Application.Commands;
+using FigureManager.Shapes;
 using FigureManager.ToolBar;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 using System;
+using System.Collections.Generic;
 
 namespace FigureManager.Application
 {
     class Application
     {
+        private const int WinWidth = 800;
+        private const int WinHeight = 600;
         private Application() { }
         private static Application _instance;
 
         private static Toolbar _toolBar;
-        private static Canvas.CanvasModel _canvas;
-        static RenderWindow win;
+        private static Canvas _canvas;
+        private static RenderWindow win;
+
+        private static Stack<CanvasSnapshot> _commandHistory;
 
         public static Application GetInstance()
         {
@@ -26,12 +32,13 @@ namespace FigureManager.Application
             return _instance;
         }
 
-        public static void Start(Canvas.CanvasModel canvas)
+        public static void Start(List<MyShape> shapes)
         {
-            _canvas = canvas;
-            _toolBar = new Toolbar(_canvas.Width, canvas);
+            _commandHistory = new Stack<CanvasSnapshot>();
+            _canvas = new Canvas(shapes, _commandHistory);
+            _toolBar = new Toolbar(WinWidth, _canvas);
 
-            win = new RenderWindow(new VideoMode(_canvas.Width, _canvas.Height), _canvas.Name);
+            win = new RenderWindow(new VideoMode(WinWidth, WinHeight), "");
             ListenEvents();
 
             foreach (MyShape shape in _canvas.Shapes)
@@ -71,7 +78,6 @@ namespace FigureManager.Application
             {
                 _toolBar.MouseLeftPressed(new Vector2f(arguments.X, arguments.Y), Keyboard.IsKeyPressed(Keyboard.Key.LControl));
 
-                _canvas.StartDragAndDrope(new Vector2f(arguments.X, arguments.Y));
             }
         }
 
@@ -94,6 +100,13 @@ namespace FigureManager.Application
             else if (arguments.Control && arguments.Code == Keyboard.Key.G)
             {
                 _toolBar.CtrlGPressed();
+            }
+            else if (arguments.Control && arguments.Code == Keyboard.Key.Z)
+            {
+                if (_commandHistory.Count > 0)
+                {
+                    _commandHistory.Pop().Restore();
+                }
             }
         }
     }

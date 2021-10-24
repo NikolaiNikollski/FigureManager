@@ -1,30 +1,32 @@
-﻿using FigureManager.Shapes;
+﻿using FigureManager.Application.Commands;
+using FigureManager.Shapes;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FigureManager.Canvas
+namespace FigureManager
 {
-    public class CanvasModel
+    public class Canvas
     {
-        public string Name { get; set; }
-
-        public uint Height { get; set; }
-
-        public uint Width { get; set; }
-
-        public Color Background { get; set; }
-
-        public List<MyShape> Shapes { get; set; }
-
-        public List<MyShape> SelectedShapes { get; set; }
-
+        public Color Background;
+        public List<MyShape> Shapes;
+        public List<MyShape> SelectedShapes;
         public MyShape MovingShape;
         public bool IsMove = false;
         public float dX;
         public float dY;
+
+        private readonly Stack<CanvasSnapshot> _commandHistory;
+
+        public Canvas(List<MyShape> shapes, Stack<CanvasSnapshot> commandHistory)
+        {
+            Shapes = shapes;
+            Background = Color.White;
+            _commandHistory = commandHistory;
+            SelectedShapes = new List<MyShape>();
+        }
 
         public void Draw(RenderWindow win)
         {
@@ -69,6 +71,7 @@ namespace FigureManager.Canvas
 
         public bool StartDragAndDrope(Vector2f coords)
         {
+            SaveSnapshot();
             MyShape shape = GetShape(coords);
             if (shape == null)
             {
@@ -104,6 +107,7 @@ namespace FigureManager.Canvas
 
         public bool Fill(Vector2f coords, Color color)
         {
+            SaveSnapshot();
             MyShape shape = GetShape(coords);
             if (shape != null)
             {
@@ -118,6 +122,7 @@ namespace FigureManager.Canvas
 
         public bool AddShape(Vector2f coords, ShapeType type, Color color)
         {
+            SaveSnapshot();
             switch (type)
             {
                 case ShapeType.Rectangle:
@@ -136,6 +141,7 @@ namespace FigureManager.Canvas
 
         public bool SetOutlineThickness(int width)
         {
+            SaveSnapshot();
             foreach (MyShape shape in SelectedShapes)
             {
                 shape.OutlineThickness = width;
@@ -146,6 +152,7 @@ namespace FigureManager.Canvas
 
         public bool SetOutlineColor(Color color)
         {
+            SaveSnapshot();
             foreach (MyShape shape in SelectedShapes)
             {
                 shape.OutlineColor = color;
@@ -156,6 +163,7 @@ namespace FigureManager.Canvas
 
         public bool CombineShape()
         {
+            SaveSnapshot();
             if (SelectedShapes.Count < 2)
             {
                 return false;
@@ -171,6 +179,7 @@ namespace FigureManager.Canvas
 
         public bool DisbandShape()
         {
+            SaveSnapshot();
             bool result = false;
 
             foreach (MyShape shape in SelectedShapes)
@@ -190,6 +199,11 @@ namespace FigureManager.Canvas
         private MyShape GetShape(Vector2f coords)
         {
             return Shapes.FirstOrDefault(s => s.GetGlobalBounds().Contains(coords.X, coords.Y));
+        }
+
+        private void SaveSnapshot()
+        {
+            _commandHistory.Push(new CanvasSnapshot(this, Background, Shapes));
         }
     }
 }

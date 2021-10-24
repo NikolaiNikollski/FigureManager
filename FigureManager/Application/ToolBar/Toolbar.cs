@@ -1,5 +1,5 @@
-﻿using FigureManager.Application.ToolBar.States;
-using FigureManager.Canvas;
+﻿using FigureManager.Application.Commands;
+using FigureManager.Application.ToolBar.States;
 using FigureManager.Shapes;
 using SFML.Graphics;
 using SFML.System;
@@ -11,7 +11,7 @@ namespace FigureManager.ToolBar
     public class Toolbar
     {
         private State State;
-        private CanvasModel Canvas;
+        private Canvas Canvas;
         public List<Button> Buttons = new List<Button>();
         public Rectangle Background;
 
@@ -20,7 +20,7 @@ namespace FigureManager.ToolBar
         private const int XPositionBase = 5;
         private const int XPositionStep = 45;
 
-        public Toolbar(uint canvasWidth, CanvasModel canvas)
+        public Toolbar(uint canvasWidth, Canvas canvas)
         {
             Canvas = canvas;
             State = new DragAndDropeState(canvas, this, Color.White);
@@ -73,8 +73,6 @@ namespace FigureManager.ToolBar
         public void MouseLeftPressed(Vector2f coords, bool isCtrlPressed)
         {
             State.MouseLeftClick(coords, isCtrlPressed);
-
-
         }
 
         public void SetState(State state)

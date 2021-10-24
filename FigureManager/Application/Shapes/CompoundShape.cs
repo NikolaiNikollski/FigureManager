@@ -123,5 +123,11 @@ namespace FigureManager.Shapes
         public override float GetSquare => Shapes.Select(s => s.GetSquare).Aggregate((x, y) => x + y);
 
         public override float GetPerimeter => Shapes.Select(s => s.GetPerimeter).Aggregate((x, y) => x + y);
+
+        public override object Clone()
+        {
+            CompoundShape clone = new CompoundShape(Shapes.Select(s => (MyShape)s.Clone()).ToList());
+            return clone;
+        }
     }
 }

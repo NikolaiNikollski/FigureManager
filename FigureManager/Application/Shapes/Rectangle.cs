@@ -25,5 +25,18 @@ namespace FigureManager.Shapes
         public override float GetSquare => Size.X * Size.Y;
 
         public override float GetPerimeter => Size.X + Size.Y;
+
+        public override object Clone()
+        {
+            Rectangle clone = new Rectangle(new Vector2f(100, 100));
+
+            ((RectangleShape)clone.Shape).Size = ((RectangleShape)Shape).Size;
+            clone.FillColor = FillColor;
+            clone.Position = new Vector2f(Position.X, Position.Y);
+            clone.OutlineColor = OutlineColor;
+            clone.OutlineThickness = OutlineThickness;
+
+            return clone;
+        }
     }
 }

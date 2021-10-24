@@ -4,7 +4,7 @@ using System;
 
 namespace FigureManager.Shapes
 {
-    public abstract class MyShape : Shape
+    public abstract class MyShape : Shape, ICloneable
     {
         protected readonly Shape Shape;
 
@@ -64,5 +64,7 @@ namespace FigureManager.Shapes
         {
             throw new NotImplementedException();
         }
+
+        public abstract object Clone();
     }
 }

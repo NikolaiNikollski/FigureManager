@@ -9,14 +9,19 @@ namespace FigureManager.Shapes
         private const float DefaultRadius = 50;
         private const int PointCount = 3;
 
-        public float Side0 { get; }
+        private float Side0 { get; }
+        private float Side1 { get; }
+        private float Side2 { get; }
 
-        public float Side1 { get; }
+        private Vector2f p1;
+        private Vector2f p2;
+        private Vector2f p3;
 
-        public float Side2 { get; }
-
-        public Triangle(Vector2f p1, Vector2f p2, Vector2f p3) : base(new ConvexShape(PointCount))
+        public Triangle(Vector2f р1, Vector2f р2, Vector2f р3) : base(new ConvexShape(PointCount))
         {
+            p1 = р1;
+            p2 = р2;
+            p3 = р3;
             ConvexShape baseShape = (ConvexShape)base.Shape;
             baseShape.SetPoint(0, p1);
             baseShape.SetPoint(1, p2);
@@ -31,9 +36,9 @@ namespace FigureManager.Shapes
         public Triangle(Vector2f center) : base(new ConvexShape(PointCount))
         {
             ConvexShape baseShape = (ConvexShape)base.Shape;
-            Vector2f p1 = new Vector2f(center.X, center.Y - DefaultRadius);
-            Vector2f p2 = new Vector2f(center.X - DefaultRadius * (float)Math.Sqrt(3) / 2, center.Y + DefaultRadius / 2);
-            Vector2f p3 = new Vector2f(center.X + DefaultRadius *(float)Math.Sqrt(3) / 2, center.Y + DefaultRadius / 2);
+            p1 = new Vector2f(center.X, center.Y - DefaultRadius);
+            p2 = new Vector2f(center.X - DefaultRadius * (float)Math.Sqrt(3) / 2, center.Y + DefaultRadius / 2);
+            p3 = new Vector2f(center.X + DefaultRadius *(float)Math.Sqrt(3) / 2, center.Y + DefaultRadius / 2);
             baseShape.SetPoint(0, p1);
             baseShape.SetPoint(1, p2);
             baseShape.SetPoint(2, p3);
@@ -46,5 +51,17 @@ namespace FigureManager.Shapes
         public override float GetPerimeter { get => Side0 + Side1 + Side2; }
 
         public override float GetSquare { get => (float)Math.Sqrt(GetPerimeter / 2 * (GetPerimeter / 2 - Side0) * (GetPerimeter / 2 - Side1) * (GetPerimeter / 2 - Side2)); }
+
+        public override object Clone()
+        {
+            Triangle clone = new Triangle(p1, p2, p3);
+
+            clone.FillColor = FillColor;
+            clone.Position = new Vector2f(Position.X, Shape.Position.Y);
+            clone.OutlineColor = OutlineColor;
+            clone.OutlineThickness = OutlineThickness;
+
+            return clone;
+        }
     }
 }

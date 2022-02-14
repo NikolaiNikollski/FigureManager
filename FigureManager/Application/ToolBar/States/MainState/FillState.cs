@@ -4,7 +4,7 @@ using SFML.System;
 
 namespace FigureManager.Application.ToolBar.States
 {
-    public class FillState : State
+    public class FillState : MainState
     {
         public FillState(Canvas canvas, Toolbar toolbar, Color activeColor) : base(toolbar, canvas, activeColor)
         {

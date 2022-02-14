@@ -13,9 +13,9 @@ namespace FigureManager.Shapes
         private float Side1 { get; }
         private float Side2 { get; }
 
-        private Vector2f p1;
-        private Vector2f p2;
-        private Vector2f p3;
+        public Vector2f p1;
+        public Vector2f p2;
+        public Vector2f p3;
 
         public Triangle(Vector2f р1, Vector2f р2, Vector2f р3) : base(new ConvexShape(PointCount))
         {
@@ -46,6 +46,7 @@ namespace FigureManager.Shapes
             Side0 = (float)Math.Sqrt(Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
             Side1 = (float)Math.Sqrt(Math.Pow(p3.X - p2.X, 2) + Math.Pow(p3.Y - p2.Y, 2));
             Side2 = (float)Math.Sqrt(Math.Pow(p1.X - p3.X, 2) + Math.Pow(p1.Y - p3.Y, 2));
+            Type = ShapeType.Triangle;
         }
 
         public override float GetPerimeter { get => Side0 + Side1 + Side2; }

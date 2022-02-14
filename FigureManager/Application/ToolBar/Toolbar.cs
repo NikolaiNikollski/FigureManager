@@ -1,5 +1,4 @@
-﻿using FigureManager.Application.Commands;
-using FigureManager.Application.ToolBar.States;
+﻿using FigureManager.Application.ToolBar.States;
 using FigureManager.Shapes;
 using SFML.Graphics;
 using SFML.System;
@@ -10,7 +9,8 @@ namespace FigureManager.ToolBar
 {
     public class Toolbar
     {
-        private State State;
+        private MainState MainState;
+        private InputOutputState InputOutputState;
         private Canvas Canvas;
         public List<Button> Buttons = new List<Button>();
         public Rectangle Background;
@@ -23,7 +23,8 @@ namespace FigureManager.ToolBar
         public Toolbar(uint canvasWidth, Canvas canvas)
         {
             Canvas = canvas;
-            State = new DragAndDropeState(canvas, this, Color.White);
+            MainState = new DragAndDropeState(canvas, this, Color.White);
+            InputOutputState = new BaseInputOutputState(canvas, this);
 
             Background = new Rectangle(new Vector2f(0, 0), new Vector2f(canvasWidth, ToolBarHeight));
             Background.FillColor = new Color(192, 192, 192);
@@ -43,6 +44,10 @@ namespace FigureManager.ToolBar
             Buttons.Add(new ColorPickButton(Color.Green));
             Buttons.Add(new ColorPickButton(Color.Red));
             Buttons.Add(new ColorPickButton(Color.Blue));
+            Buttons.Add(new CustomButton(ButtonType.BaseInputOutput, "Img/b.png"));
+            Buttons.Add(new CustomButton(ButtonType.PerfectInputOutput, "Img/p.png"));
+            Buttons.Add(new CustomButton(ButtonType.Import, "Img/import.png"));
+            Buttons.Add(new CustomButton(ButtonType.Export, "Img/export.png"));
         }
 
         public void Draw(RenderWindow win)
@@ -54,10 +59,13 @@ namespace FigureManager.ToolBar
             Buttons
                 .Where(b => b.Type == ButtonType.ChooseColor)
                 .Select(b => (ColorPickButton)b)
-                .First(b => b.Color == State.ActiveColor)
+                .First(b => b.Color == MainState.ActiveColor)
                 .FillColor = Color.Magenta;
             Buttons
-                .First(b => b.Type == State.ActiveCustomButton)
+                .First(b => b.Type == MainState.ActiveCustomButton)
+                .FillColor = Color.Magenta;
+            Buttons
+                .First(b => b.Type == InputOutputState.ActiveInputOutputButton)
                 .FillColor = Color.Magenta;
 
             Background.Draw(win);
@@ -72,12 +80,31 @@ namespace FigureManager.ToolBar
 
         public void MouseLeftPressed(Vector2f coords, bool isCtrlPressed)
         {
-            State.MouseLeftClick(coords, isCtrlPressed);
+            MainState.MouseLeftClick(coords, isCtrlPressed);
+            InputOutputState.MouseLeftClick(coords, isCtrlPressed);
         }
 
-        public void SetState(State state)
+        public void Import()
         {
-            State = state;
+            Canvas newCanvas = InputOutputState.Import();
+            Canvas.Background = newCanvas.Background;
+            Canvas.Shapes = newCanvas.Shapes;
+            Canvas.SelectedShapes = new List<MyShape>();
+        }
+
+        public void Export()
+        {
+            InputOutputState.Export(Canvas);
+        }
+
+        public void SetInputOutputState(InputOutputState state)
+        {
+            InputOutputState = state;
+        }
+
+        public void SetMainState(MainState state)
+        {
+            MainState = state;
         }
 
         public void CtrlUPressed()

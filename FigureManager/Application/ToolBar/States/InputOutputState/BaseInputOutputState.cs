@@ -1,4 +1,5 @@
 ﻿using FigureManager.Shapes;
+using FigureManager.ToolBar;
 using SFML.Graphics;
 using SFML.System;
 using System.Collections.Generic;
@@ -6,21 +7,36 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace FigureManager.Txt
+namespace FigureManager.Application.ToolBar.States
 {
-    public static class TxtHelper
+    class BaseInputOutputState : InputOutputState
     {
+        public BaseInputOutputState(Canvas canvas, Toolbar toolbar) : base(toolbar, canvas)
+        {
+            ActiveInputOutputButton = ButtonType.BaseInputOutput;
+        }
+
         private const string TriangleTypeName = "TRIANGLE";
         private const string RectangleTypeName = "RECTANGLE";
         private const string CircleTypeName = "CIRCLE";
         private const string TypeRegEx = "(.*?):";
         private const string ParametersRegEx = "=(.*?)(;|$)";
 
-        public static List<MyShape> LoadShapes(string inputPath)
+        public override void Export(Canvas canvas)
+        {
+            StreamWriter sw = new StreamWriter(OutputPath);
+            foreach (MyShape shape in canvas.Shapes)
+            {
+                sw.WriteLine(shape.GetDescription);
+            }
+            sw.Dispose();
+        }
+
+        public override Canvas Import()
         {
             List<MyShape> shapes = new List<MyShape>();
 
-            StreamReader sr = new StreamReader(inputPath, Encoding.Default);
+            StreamReader sr = new StreamReader(InputPath, Encoding.Default);
             string line;
             while ((line = sr.ReadLine()?.Trim()) != null)
             {
@@ -56,17 +72,13 @@ namespace FigureManager.Txt
             }
 
             sr.Dispose();
-            return shapes;
-        }
 
-        public static void SetShapeDescription(List<MyShape> shapes, string outputPath)
-        {
-            StreamWriter sw = new StreamWriter(outputPath);
-            foreach (MyShape shape in shapes)
+            foreach (var shape in shapes)
             {
-                sw.WriteLine(shape.GetDescription);
+                shape.FillColor = Color.Green;
             }
-            sw.Dispose();
+
+            return new Canvas(shapes, new Stack<Commands.CanvasSnapshot>());
         }
     }
 }

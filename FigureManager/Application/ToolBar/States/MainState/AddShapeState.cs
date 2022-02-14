@@ -5,7 +5,7 @@ using SFML.System;
 
 namespace FigureManager.Application.ToolBar.States
 {
-    public class AddShapeState : State
+    public class AddShapeState : MainState
     {
         private ShapeType ShapeType;
 

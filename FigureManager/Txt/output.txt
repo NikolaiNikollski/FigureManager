@@ -1,4 +1,1 @@
-Triangle: P=459,38007; S=7500,0024
-Rectangle: P=400; S=40000
-Circle: P=314,15927; S=7853,9814
-Triangle: P=560,5551; S=14999,999
+{"BackgroundColor":{"R":255,"G":255,"B":255,"A":255},"Circles":[{"P1":{"X":647.0,"Y":119.0},"Radius":50.0,"ShapeColor":{"R":0,"G":0,"B":255,"A":255},"OutlineThickness":0.0,"OutlineColor":{"R":255,"G":255,"B":255,"A":255}}],"Rectangles":[],"Triangles":[{"P1":{"X":477.0,"Y":176.0},"P2":{"X":433.69873,"Y":251.0},"P3":{"X":520.3013,"Y":251.0},"Position":{"X":0.0,"Y":0.0},"ShapeColor":{"R":255,"G":0,"B":0,"A":255},"OutlineThickness":0.0,"OutlineColor":{"R":255,"G":255,"B":255,"A":255}}],"Compounds":[]}

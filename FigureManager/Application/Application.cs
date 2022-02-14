@@ -11,8 +11,8 @@ namespace FigureManager.Application
 {
     class Application
     {
-        private const int WinWidth = 800;
-        private const int WinHeight = 600;
+        private const int WinWidth = 1000;
+        private const int WinHeight = 700;
         private Application() { }
         private static Application _instance;
 
@@ -32,10 +32,10 @@ namespace FigureManager.Application
             return _instance;
         }
 
-        public static void Start(List<MyShape> shapes)
+        public static void Start()
         {
             _commandHistory = new Stack<CanvasSnapshot>();
-            _canvas = new Canvas(shapes, _commandHistory);
+            _canvas = new Canvas(new List<MyShape>(), _commandHistory);
             _toolBar = new Toolbar(WinWidth, _canvas);
 
             win = new RenderWindow(new VideoMode(WinWidth, WinHeight), "");

@@ -22,6 +22,14 @@
 
         SetOutlineColor,
 
-        ChooseColor
+        ChooseColor,
+
+        BaseInputOutput,
+
+        PerfectInputOutput,
+
+        Import,
+
+        Export
     }
 }

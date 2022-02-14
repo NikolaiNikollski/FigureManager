@@ -6,14 +6,14 @@ using System.Linq;
 
 namespace FigureManager.Application.ToolBar.States
 {
-    public abstract class State
+    public abstract class MainState
     {
         protected Canvas Canvas;
         protected Toolbar Toolbar;
         public ButtonType ActiveCustomButton { get; protected set; }
         public Color ActiveColor = Color.White;
 
-        protected State(Toolbar toolbar, Canvas canvas, Color activeColor)
+        protected MainState(Toolbar toolbar, Canvas canvas, Color activeColor)
         {
             Toolbar = toolbar;
             Canvas = canvas;
@@ -32,19 +32,19 @@ namespace FigureManager.Application.ToolBar.States
                     switch (button.Type)
                     {
                         case ButtonType.DragAndDrope:
-                            Toolbar.SetState(new DragAndDropeState(Canvas, Toolbar, ActiveColor));
+                            Toolbar.SetMainState(new DragAndDropeState(Canvas, Toolbar, ActiveColor));
                             break;
                         case ButtonType.Fill:
-                            Toolbar.SetState(new FillState(Canvas, Toolbar, ActiveColor));
+                            Toolbar.SetMainState(new FillState(Canvas, Toolbar, ActiveColor));
                             break;
                         case ButtonType.AddRectangle:
-                            Toolbar.SetState(new AddShapeState(Canvas, Toolbar, ShapeType.Rectangle, ActiveColor));
+                            Toolbar.SetMainState(new AddShapeState(Canvas, Toolbar, ShapeType.Rectangle, ActiveColor));
                             break;
                         case ButtonType.AddTriangle:
-                            Toolbar.SetState(new AddShapeState(Canvas, Toolbar, ShapeType.Triangle, ActiveColor));
+                            Toolbar.SetMainState(new AddShapeState(Canvas, Toolbar, ShapeType.Triangle, ActiveColor));
                             break;
                         case ButtonType.AddCircle:
-                            Toolbar.SetState(new AddShapeState(Canvas, Toolbar, ShapeType.Circle, ActiveColor));
+                            Toolbar.SetMainState(new AddShapeState(Canvas, Toolbar, ShapeType.Circle, ActiveColor));
                             break;
                         case ButtonType.ChooseColor:
                             ActiveColor = ((ColorPickButton)button).Color;
@@ -69,7 +69,7 @@ namespace FigureManager.Application.ToolBar.States
             }
             else
             {
-                bool result = CanvasClick(coords, isCtrlPressed, ActiveColor);               
+                CanvasClick(coords, isCtrlPressed, ActiveColor);
             }
         }
     }

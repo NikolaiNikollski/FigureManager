@@ -20,6 +20,7 @@ namespace FigureManager.Shapes
         public Rectangle(Vector2f center) : base(new RectangleShape(DefaultSize))
         {
             Shape.Position = new Vector2f(center.X - DefaultSize.X / 2, center.Y - DefaultSize.Y / 2);
+            Type = ShapeType.Rectangle;
         }
 
         public override float GetSquare => Size.X * Size.Y;

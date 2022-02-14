@@ -4,7 +4,7 @@ using SFML.System;
 
 namespace FigureManager.Application.ToolBar.States
 {
-    public class DragAndDropeState : State
+    public class DragAndDropeState : MainState
     {
         public DragAndDropeState(Canvas canvas, Toolbar toolbar, Color activeColor) : base(toolbar, canvas, activeColor) 
         {
